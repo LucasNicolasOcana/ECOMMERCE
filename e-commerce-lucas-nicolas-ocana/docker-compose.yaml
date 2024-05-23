@@ -1,0 +1,40 @@
+version: "3.8"
+
+services:
+  nestapp:
+    build: ./
+    ports: 
+      - "3000:3000"
+    env_file:
+      - .env.development
+    depends_on:
+      - postgresdb
+
+  postgresdb:
+    image: "postgres"
+    container_name: postgres_db
+    restart: always
+    ports:
+      - "5433:5432"
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 15420900
+      POSTGRES_DB: ECOMMERCE
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    env_file:
+      - .env.development
+
+  pgadmin:
+    image: dpage/pgadmin4
+    restart: always
+    ports:
+      - "8080:80"
+    environment:
+      PGADMIN_DEFAULT_EMAIL: locana392@gmail.com
+      PGADMIN_DEFAULT_PASSWORD: admin
+    depends_on:
+      - postgresdb
+
+volumes:
+  pgdata:
